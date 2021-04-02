@@ -1,3 +1,3 @@
 # blood_bank_app
 
-A new unified app for all blood banks and hospitals for blood donation.
+A new unified Flutter app for all blood banks and hospitals for blood donation.
