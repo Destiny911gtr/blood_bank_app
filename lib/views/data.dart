@@ -1,4 +1,4 @@
-import 'package:blood_bank_app/userData.dart';
+import 'package:blood_bank_app/views/userData.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -62,7 +62,8 @@ class MyHomePage extends StatelessWidget {
                       horizontal: size.width * 0.1, vertical: 10),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: UnderlineInputBorder(borderSide: BorderSide.none),
+                        border:
+                            UnderlineInputBorder(borderSide: BorderSide.none),
                         fillColor: Colors.grey[200],
                         hintText: 'Email Address',
                         filled: true),
@@ -73,7 +74,8 @@ class MyHomePage extends StatelessWidget {
                       horizontal: size.width * 0.1, vertical: 10),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        border: UnderlineInputBorder(borderSide: BorderSide.none),
+                        border:
+                            UnderlineInputBorder(borderSide: BorderSide.none),
                         fillColor: Colors.grey[200],
                         hintText: 'Password',
                         suffixIcon: Icon(Icons.remove_red_eye),

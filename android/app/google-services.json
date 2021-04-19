@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "631408157440",
+    "firebase_url": "https://bankblood-101-default-rtdb.firebaseio.com",
+    "project_id": "bankblood-101",
+    "storage_bucket": "bankblood-101.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631408157440:android:580785dcc965a11d6949e5",
+        "android_client_info": {
+          "package_name": "com.example.blood_bank_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "631408157440-3u9bcqab7lejkver054rnagtfm81s0ah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8YFH1eYQffjhBHDvffHXA5aBvKiJtO60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "631408157440-3u9bcqab7lejkver054rnagtfm81s0ah.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -23,17 +23,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  lottie: ^1.0.1
-  firebase: ^9.0.1
-  firebase_auth: ^1.0.1
-  cloud_firestore: ^1.0.3
+  lottie:
+  # firebase:
+  # firebase_auth:
+  firebase_database:
+  firebase_core:
   outline_material_icons: ^0.1.1
   google_fonts: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  
+
 
 dev_dependencies:
   flutter_test:
