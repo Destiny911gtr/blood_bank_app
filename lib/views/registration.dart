@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:animate_icons/animate_icons.dart';
 import 'package:blood_bank_app/utils/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -37,20 +36,9 @@ class Registration extends StatefulWidget {
 
 class _RegistrationState extends State<Registration> {
   bool _enableFields = true;
-  AnimateIconController _iconController = AnimateIconController();
-  ScrollController _hideButtonController;
   static final _formKey = GlobalKey<FormState>();
-  TextEditingController _fname = TextEditingController();
-  TextEditingController _lname = TextEditingController();
-  TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpassword = TextEditingController();
-  TextEditingController _dob = TextEditingController();
-  TextEditingController _weight = TextEditingController();
-  TextEditingController _address = TextEditingController();
-  TextEditingController _city = TextEditingController();
-  TextEditingController _mobno = TextEditingController();
-  TextEditingController _aadhar = TextEditingController();
 
   final List _genderSel = ['Male', 'Female'];
   final List _bloodSel = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -73,7 +61,6 @@ class _RegistrationState extends State<Registration> {
       top: false,
       child: Scaffold(
         body: CustomScrollView(
-          controller: _hideButtonController,
           slivers: <Widget>[
             SliverAppBar(
               systemOverlayStyle: SystemUiOverlayStyle(
@@ -157,7 +144,6 @@ class _RegistrationState extends State<Registration> {
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextFormField(
                                     enabled: _enableFields,
-                                    controller: _fname,
                                     decoration: InputDecoration(
                                       labelText: 'First name',
                                     ),
@@ -179,7 +165,6 @@ class _RegistrationState extends State<Registration> {
                                       const EdgeInsets.fromLTRB(8, 0, 0, 0),
                                   child: TextFormField(
                                     enabled: _enableFields,
-                                    controller: _lname,
                                     decoration: InputDecoration(
                                       labelText: 'Last name',
                                     ),
@@ -202,7 +187,6 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
-                            controller: _email,
                             decoration: InputDecoration(
                               labelText: 'Email',
                             ),
@@ -286,14 +270,14 @@ class _RegistrationState extends State<Registration> {
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                    child: GenderSelect(context),
+                                    child: genderSelect(),
                                   )),
                               Expanded(
                                   flex: 1,
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                    child: DateOfBirthSelector(context),
+                                    child: dateOfBirthSelector(),
                                   ))
                             ],
                           ),
@@ -310,7 +294,6 @@ class _RegistrationState extends State<Registration> {
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextFormField(
                                     enabled: _enableFields,
-                                    controller: _weight,
                                     decoration: InputDecoration(
                                       labelText: 'Weight',
                                     ),
@@ -336,7 +319,7 @@ class _RegistrationState extends State<Registration> {
                                 child: Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                  child: BloodGroup(context),
+                                  child: bloodGroup(),
                                 ),
                               ),
                             ],
@@ -346,7 +329,6 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
-                            controller: _address,
                             decoration: InputDecoration(
                               labelText: 'Address',
                             ),
@@ -366,7 +348,6 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
-                            controller: _city,
                             decoration: InputDecoration(
                               labelText: 'City',
                             ),
@@ -386,7 +367,6 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
-                            controller: _mobno,
                             decoration: InputDecoration(
                                 labelText: 'Phone',
                                 hintText: 'Enter number without +91'),
@@ -410,7 +390,6 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
-                            controller: _aadhar,
                             decoration: InputDecoration(
                               labelText: 'Aadhar number',
                             ),
@@ -443,7 +422,10 @@ class _RegistrationState extends State<Registration> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
+          child: Icon(
+            Icons.check,
+            color: Colors.grey[100],
+          ),
           onPressed: () async {
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
@@ -456,24 +438,40 @@ class _RegistrationState extends State<Registration> {
                 mainReference
                     .child("users/${userCredential.user.uid}")
                     .set(_formData);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Registered successfully"),
+                  ),
+                );
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.pop(context);
+                });
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
-                  print('The password provided is too weak.');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("The password provided is too weak."),
+                    ),
+                  );
                 } else if (e.code == 'email-already-in-use') {
-                  print('The account already exists for that email.');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                          "The account already exists for that email. Try logging in or forgot password."),
+                      action: SnackBarAction(
+                        label: "Close",
+                        textColor: Colors.orange,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
                 }
               } catch (e) {
                 print(e);
               }
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Uploaded successfully"),
-                ),
-              );
               disableFields();
-              Future.delayed(const Duration(seconds: 2), () {
-                Navigator.pop(context);
-              });
               return true;
             }
           },
@@ -482,9 +480,8 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  Widget DateOfBirthSelector(BuildContext context) {
+  Widget dateOfBirthSelector() {
     return FormBuilderDateTimePicker(
-      controller: _dob,
       name: 'date',
       initialDatePickerMode: DatePickerMode.year,
       inputType: InputType.date,
@@ -504,7 +501,7 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  Widget GenderSelect(BuildContext context) {
+  Widget genderSelect() {
     return FormBuilderDropdown(
       enabled: _enableFields,
       name: 'gender',
@@ -532,7 +529,7 @@ class _RegistrationState extends State<Registration> {
     );
   }
 
-  Widget BloodGroup(BuildContext context) {
+  Widget bloodGroup() {
     return FormBuilderDropdown(
       enabled: _enableFields,
       name: 'blood',

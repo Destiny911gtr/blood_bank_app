@@ -48,8 +48,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _hidePass = true;
-  bool _success;
-  String _userEmail;
+  bool _loading = false;
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -208,33 +207,50 @@ class _MyHomePageState extends State<MyHomePage> {
                           horizontal: size.width * 0.1, vertical: 10),
                       child: TextButton(
                         onPressed: () async {
-                          try {
-                            UserCredential userCredential = await FirebaseAuth
-                                .instance
-                                .signInWithEmailAndPassword(
-                                    email: _emailController.text,
-                                    password: _passwordController.text);
-                            if (userCredential != null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Welcome back!")));
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        userData(userCredential.user.uid)),
-                              );
+                          if (!_loading) {
+                            setState(() {
+                              _loading = true;
+                            });
+                            try {
+                              UserCredential userCredential = await FirebaseAuth
+                                  .instance
+                                  .signInWithEmailAndPassword(
+                                      email: _emailController.text,
+                                      password: _passwordController.text);
+                              if (userCredential != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Welcome back!")));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          userData(userCredential.user.uid)),
+                                );
+                              }
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "No user found for that email.")));
+                              } else if (e.code == 'wrong-password') {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Wrong password provided for that user.")));
+                              } else if (e.code == 'network-request-failed') {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        "Please check your internet connection.")));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "Please enter your credentials.")));
+                              }
                             }
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          "No user found for that email.")));
-                            } else if (e.code == 'wrong-password') {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text(
-                                      "Wrong password provided for that user.")));
-                            }
+                            setState(() {
+                              _loading = false;
+                            });
                           }
                         },
                         child: Material(
@@ -246,12 +262,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 borderRadius: BorderRadius.circular(8)),
                             height: 50,
                             child: Center(
-                              child: Text(
-                                "SIGN IN",
-                                style: GoogleFonts.openSans(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              child: _signingIn(),
                             ),
                           ),
                         ),
@@ -296,6 +307,21 @@ class _MyHomePageState extends State<MyHomePage> {
         return Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
+  }
+
+  Widget _signingIn() {
+    if (!_loading) {
+      return Text(
+        "SIGN IN",
+        style: GoogleFonts.openSans(
+            color: Colors.white, fontWeight: FontWeight.bold),
+      );
+    } else {
+      return Theme(
+        data: ThemeData(accentColor: Colors.grey[100]),
+        child: Container(child: CircularProgressIndicator()),
+      );
+    }
   }
 
   void _togglePasswordView() {

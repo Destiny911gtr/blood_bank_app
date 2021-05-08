@@ -1,9 +1,14 @@
+import 'dart:collection';
+
 import 'package:blood_bank_app/utils/utils.dart';
+import 'package:blood_bank_app/views/donate.dart';
+import 'package:blood_bank_app/views/request.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 
 class userData extends StatefulWidget {
   var _uid;
@@ -17,6 +22,11 @@ class userData extends StatefulWidget {
 
 class _userDataState extends State<userData> {
   final databaseRef = FirebaseDatabase.instance.reference();
+
+  Future<dynamic> _fetchData(Map userData) async {
+    var _box = await Hive.openBox('userDataBox');
+    _box.putAll(userData);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +112,73 @@ class _userDataState extends State<userData> {
                         (BuildContext context, int index) {
                           return Column(
                             children: [
-                              Card(child: Text("ok")),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Donate()),
+                                      );
+                                    },
+                                    child: Material(
+                                      elevation: 10,
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffff5f6d),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        height: 50,
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Donate blood",
+                                              style: GoogleFonts.openSans(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Request()),
+                                      );
+                                    },
+                                    child: Material(
+                                      elevation: 10,
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffff5f6d),
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        height: 50,
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              "Request blood",
+                                              style: GoogleFonts.openSans(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           );
                         },
