@@ -72,25 +72,23 @@ class _RegistrationState extends State<Registration> {
               snap: true,
               floating: true,
               expandedHeight: 160.0,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.zero,
-                title: SizedBox(
-                  height: 60,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Color(0xffff5f6d), Color(0xffffc371)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: FlexibleSpaceBar(
+                  titlePadding: EdgeInsets.zero,
+                  title: SizedBox(
+                    height: 55,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
                           Text(
                             "Registration",
                             style: GoogleFonts.openSans(
@@ -99,22 +97,22 @@ class _RegistrationState extends State<Registration> {
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                background: ClipPath(
-                  clipper: DrawBox(),
-                  child: Container(
-                    height: size.height,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xffff5f6d),
-                          Color(0xffffc371),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                  background: ClipPath(
+                    clipper: DrawBox(),
+                    child: Container(
+                      height: size.height,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xffff5f6d),
+                            Color(0xffffc371),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
                     ),
                   ),
@@ -144,6 +142,7 @@ class _RegistrationState extends State<Registration> {
                                       const EdgeInsets.fromLTRB(0, 0, 8, 0),
                                   child: TextFormField(
                                     enabled: _enableFields,
+                                    autofillHints: [AutofillHints.givenName],
                                     decoration: InputDecoration(
                                       labelText: 'First name',
                                     ),
@@ -165,6 +164,7 @@ class _RegistrationState extends State<Registration> {
                                       const EdgeInsets.fromLTRB(8, 0, 0, 0),
                                   child: TextFormField(
                                     enabled: _enableFields,
+                                    autofillHints: [AutofillHints.familyName],
                                     decoration: InputDecoration(
                                       labelText: 'Last name',
                                     ),
@@ -187,6 +187,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.email],
                             decoration: InputDecoration(
                               labelText: 'Email',
                             ),
@@ -206,6 +207,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.newPassword],
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: _password,
@@ -242,6 +244,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.newPassword],
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             controller: _confirmpassword,
@@ -329,6 +332,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.fullStreetAddress],
                             decoration: InputDecoration(
                               labelText: 'Address',
                             ),
@@ -348,6 +352,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.addressCity],
                             decoration: InputDecoration(
                               labelText: 'City',
                             ),
@@ -367,6 +372,7 @@ class _RegistrationState extends State<Registration> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             enabled: _enableFields,
+                            autofillHints: [AutofillHints.telephoneNumber],
                             decoration: InputDecoration(
                                 labelText: 'Phone',
                                 hintText: 'Enter number without +91'),
@@ -536,7 +542,6 @@ class _RegistrationState extends State<Registration> {
       decoration: InputDecoration(
         labelText: 'Blood group',
       ),
-      // initialValue: 'Male',
       allowClear: false,
       hint: Text('Select group'),
       validator: (value) {

@@ -1,7 +1,30 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightThemeData() {
   return ThemeData(
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.vertical,
+        ),
+        TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.vertical,
+        ),
+      },
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateColor.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.selected)) {
+            return Color(0xffff5f6d);
+          }
+          return Colors.grey;
+        },
+      ),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     brightness: Brightness.light,
     primaryColor: Color(0xffff5f6d),
     primarySwatch: Colors.red,
@@ -26,13 +49,16 @@ ThemeData lightThemeData() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(borderSide: BorderSide.none),
+      hintStyle: GoogleFonts.openSans(color: Colors.grey),
       fillColor: Colors.grey[200],
       filled: true,
     ),
+    cardColor: Colors.grey[200],
     fixTextFieldOutlineLabel: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     snackBarTheme: SnackBarThemeData(
-      contentTextStyle: TextStyle(color: Colors.black),
+      behavior: SnackBarBehavior.floating,
+      contentTextStyle: GoogleFonts.openSans(color: Colors.black),
       backgroundColor: Colors.white,
     ),
   );
@@ -40,6 +66,27 @@ ThemeData lightThemeData() {
 
 ThemeData darkThemeData() {
   return ThemeData(
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.vertical,
+        ),
+        TargetPlatform.iOS: SharedAxisPageTransitionsBuilder(
+          transitionType: SharedAxisTransitionType.vertical,
+        ),
+      },
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateColor.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.selected)) {
+            return Color(0xffff5f6d);
+          }
+          return Colors.grey;
+        },
+      ),
+    ),
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     brightness: Brightness.dark,
     primaryColor: Color(0xffff5f6d),
     primarySwatch: Colors.red,
@@ -64,14 +111,15 @@ ThemeData darkThemeData() {
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: UnderlineInputBorder(borderSide: BorderSide.none),
-      hintStyle: TextStyle(color: Colors.grey),
+      hintStyle: GoogleFonts.openSans(color: Colors.grey),
       fillColor: Colors.grey[1000],
       filled: true,
     ),
     fixTextFieldOutlineLabel: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     snackBarTheme: SnackBarThemeData(
-      contentTextStyle: TextStyle(color: Colors.white),
+      behavior: SnackBarBehavior.floating,
+      contentTextStyle: GoogleFonts.openSans(color: Colors.white),
       backgroundColor: Color(-14540254),
     ),
   );
